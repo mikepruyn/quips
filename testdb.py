@@ -1,11 +1,6 @@
-from database import QuipsDB
+from database import QuipsDB, InitDB
 
 db = QuipsDB()
 
-db.add_quip('hi', 1)
-db.add_quip('hello', 1)
-db.add_quip('hiya', 2)
-db.add_quip('helloya', 2)
-
-print(list(db.get_quip(2)))
+print([list(db.get_quip(-1)) for i in range(6)])
 
