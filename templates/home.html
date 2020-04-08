@@ -2,13 +2,18 @@
 <html>
   <body>
     <p>
-      {quip}
+      {{quip.text}}
     </p>
+
+
 
     <form method="POST" action="/">
       <input type="text" name="quip">
       <input type="submit" value="Add">
     </form>
+
+    <a href="{{url_for('quip_page', id=quip.parent)}}">Parent</a>
+    <a href="{{url_for('child_redirect', id=quip.id)}}">Next</a>
 
 
   </body>

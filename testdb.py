@@ -1,6 +1,8 @@
 from database import QuipsDB, InitDB
+from quip import Quip
 
 db = QuipsDB()
 
-print([list(db.get_quip(-1)) for i in range(6)])
+# db.add_quip(Quip('hi'))
 
+print(db.get_all_quip_ids())

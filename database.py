@@ -1,4 +1,5 @@
 import sqlite3
+from quip import Quip
 
 class InitDB:
     def __init__(self, reset=False):
@@ -32,12 +33,33 @@ class QuipsDB:
         self.conn.execute(query)
         self.conn.commit()
 
+        #returns the auto-generated primary key
+        new_key = self.conn.execute('SELECT last_insert_rowid()')
+        return new_key
 
-    def get_quip(self, parent_id):
+    def get_quip(self, id):
+        query = f'SELECT * FROM Quips ' \
+                f'WHERE id == "{id}" ' \
+                f'ORDER BY RANDOM() LIMIT 1;'
+        key, text, parent = self.conn.execute(query).fetchall()[0]   
+        return Quip(text, parent, key)
+
+
+    def get_random_child(self, parent_id):
         query = f'SELECT * FROM Quips ' \
                 f'WHERE parent == "{parent_id}" ' \
                 f'ORDER BY RANDOM() LIMIT 1;'
-        return self.conn.execute(query)
+        key, text, parent = self.conn.execute(query).fetchall()[0]   
+        return Quip(text, parent, key)
+
+    def get_any_quip(self):
+        query = f'SELECT * FROM Quips ' \
+                f'ORDER BY RANDOM() LIMIT 1;'
+        key, text, parent = self.conn.execute(query).fetchall()[0]   
+        return Quip(text, parent, key)
+
+    def get_all_quip_ids(self):
+        return [x[0] for x in list(self.conn.execute('SELECT id FROM Quips').fetchall())]
 
 
 
