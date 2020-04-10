@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>
+      {{quip.text}}
+    </p>
+
+
+
+    <form method="POST" action="/{{quip.id}}">
+      <input type="text" name="quip">
+      <input type="submit" value="Add">
+    </form>
+    {% if has_child %}
+      <a href="{{url_for('child_redirect', id=quip.id)}}">Next</a>
+    {% endif %}
+    
+
+
+  </body>
+</html>

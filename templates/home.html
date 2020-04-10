@@ -2,7 +2,7 @@
 <html>
   <body>
     <p>
-      {{quip.text}}
+      Home Page
     </p>
 
 
@@ -12,8 +12,7 @@
       <input type="submit" value="Add">
     </form>
 
-    <a href="{{url_for('quip_page', id=quip.parent)}}">Parent</a>
-    <a href="{{url_for('child_redirect', id=quip.id)}}">Next</a>
+    <a href="{{url_for('child_redirect', id=-1)}}">Next</a>
 
 
   </body>

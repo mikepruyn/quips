@@ -18,10 +18,6 @@ class InitDB:
         self.conn.execute(query)
         self.conn.commit()
 
-    def reset_db(self):
-        
-        self.init_db()
-
 class QuipsDB:
     def __init__(self):
         self.conn = sqlite3.connect('quips.db')
@@ -33,8 +29,8 @@ class QuipsDB:
         self.conn.execute(query)
         self.conn.commit()
 
-        #returns the auto-generated primary key
-        new_key = self.conn.execute('SELECT last_insert_rowid()')
+        #returns the auto-generated primary key(id)
+        new_key = self.conn.execute('SELECT last_insert_rowid() FROM Quips').fetchall()[0][0]
         return new_key
 
     def get_quip(self, id):
@@ -49,17 +45,21 @@ class QuipsDB:
         query = f'SELECT * FROM Quips ' \
                 f'WHERE parent == "{parent_id}" ' \
                 f'ORDER BY RANDOM() LIMIT 1;'
-        key, text, parent = self.conn.execute(query).fetchall()[0]   
+        result = self.conn.execute(query).fetchall()
+        if len(result) == 0:
+            return -1
+
+        key, text, parent = result[0]   
         return Quip(text, parent, key)
 
-    def get_any_quip(self):
+    def has_child(self, quip):
         query = f'SELECT * FROM Quips ' \
-                f'ORDER BY RANDOM() LIMIT 1;'
-        key, text, parent = self.conn.execute(query).fetchall()[0]   
-        return Quip(text, parent, key)
+                f'WHERE parent == "{quip.id}" '
+        result = self.conn.execute(query).fetchall()
+        return len(result) > 0
+            
 
-    def get_all_quip_ids(self):
-        return [x[0] for x in list(self.conn.execute('SELECT id FROM Quips').fetchall())]
+   
 
 
 
